@@ -1,39 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-    getAllBlog,
-    postCreateBlog,
-    putUpdateBlog,
-    deleteBlog,
-} = require("../controller/controller");
+const { getAllBlogs, createNewUser, logInUser, logOutUser } = require("../controller/controller");
 
-/**
- * @route GET api/todo
- * @description get all todo
- * @access public
- */
-router.get("/", async() => await getAllBlog());
 
-/**
- * @route POST api/todo
- * @description add a new todo
- * @access public
- */
-router.post("/", postCreateBlog);
+router.get("/blog", getAllBlogs);
 
-/**
- * @route PUT api/todo/:id
- * @description update todo
- * @access public
- */
-router.put("/:id", putUpdateBlog);
+router.post('/signUp', createNewUser);
 
-/**
- * @route DELETE api/todo/:id
- * @description delete todo
- * @access public
- */
-router.delete("/:id", deleteBlog);
+router.post('/logIn', logInUser);
 
-module.exports = router;
+router.post('/logOut', logOutUser);
+
+module.exports = router; 

@@ -1,47 +1,49 @@
-const { Blog } = require("../models/blog");
-const { client } = require('../db/mongoDB');
-exports.getAllBlog = async (req, res) => {
+const { collection, getDocs, getDoc, setDoc, updateDoc, deleteDoc } = require('firebase/firestore');
+const { createUserWithEmailAndPassword, deleteUser, updateCurrentUser } = require('firebase/auth');
+const { db, auth } = require('../db/config');
+const { CreateNewUser } = require('./authentication/CreateUser');
+const { LogInUser } = require('./authentication/LogInUser');
+const { LogOutUser } = require('./authentication/LogOut');
+
+// google auth provider code : project-233954112819
+
+const getAllBlogs = async (req, res) => {
+    console.log('Getting Blogs');
     try
     {   
-        const { collection, getDocs, getDoc } = require('firebase/firestore');
-        const { db } = require('../db/config');
-
         const collectionRef = collection(db, 'blogs');
-        const documentRef = await getDocs(collectionRef);
+        const documentsRef = await getDocs(collectionRef);
         const data = [];
-        documentRef.forEach((doc) => {
+        documentsRef.forEach((doc) => {
             data.push(doc.data())
         })
-        res.json({blogs : data})
+        res.status(200).json({blogs : data})
     }
     catch(error) 
     {
         res.status(404).json({ message: "Blog not found", error: error.message })
     }
-};
+}
 
-exports.postCreateBlog = (req, res) => {
-    Blog.create(req.body)
-        .then((data) => res.json({ message: "Blog added successfully", data }))
-        .catch((err) =>
-            res.status(400).json({ message: "Failed to add Blog", error: err.message })
-        );
-};
+// const getSingleBlog = async(req, res) => { }
 
-exports.putUpdateBlog = (req, res) => {
-    Blog.findByIdAndUpdate(req.params.id, req.body)
-        .then((data) => res.json({ message: "updated successfully", data }))
-        .catch((err) =>
-            res.status(400).json({ message: "Failed to update Blog", error: err.message })
-        )
-};
+// const postCreateBlog = async (req, res) => { }
 
-exports.deleteBlog = (req, res) => {
-    Blog.findByIdAndRemove(req.params.id, req.body)
-        .then((data) =>
-            res.json({ message: "Blog deleted successfully", data })
-        )
-        .catch((err) =>
-            res.status(404).json({ message: "book not found", error: err.message })
-        );
-};
+// const putUpdateBlog = async (req, res) => { }
+
+// const deleteBlog = async (req, res) => { }
+
+// const getSignedUser = async (req, res) => { }
+
+const createNewUser = async (req, res) => await CreateNewUser(req, res);
+
+const logInUser = async (req, res) => await LogInUser(req, res);
+
+const logOutUser = async (req, res) => await LogOutUser(req, res);
+
+module.exports = { 
+    getAllBlogs, 
+    createNewUser,
+    logInUser,
+    logOutUser
+}

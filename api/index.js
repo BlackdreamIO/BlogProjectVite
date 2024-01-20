@@ -4,22 +4,23 @@ const { ConnectToMongoDB } = require('./db/mongoDB');
 
 const { collection, getDocs, getDoc } = require('firebase/firestore');
 const { db } = require('./db/config');
+const router = require("./router/route");
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use("/api", router);
 
-//const todo = require("./router/route");
-app.use("/api/blog", async (req, res) => {
-    const collectionRef = collection(db, 'blogs');
-    const documentRef = await getDocs(collectionRef);
-    const data = [];
-    documentRef.forEach((doc) => {
-        data.push(doc.data())
-    })
-    res.json({blogs : data})
-}); 
+// app.use("/api/blog", async (req, res) => {
+//     const collectionRef = collection(db, 'blogs');
+//     const documentRef = await getDocs(collectionRef);
+//     const data = [];
+//     documentRef.forEach((doc) => {
+//         data.push(doc.data())
+//     })
+//     res.json({blogs : data})
+// }); 
 
 
 async function StartServer() 

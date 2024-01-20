@@ -4,6 +4,7 @@ const { db, auth } = require('../db/config');
 const { CreateNewUser } = require('./authentication/CreateUser');
 const { LogInUser } = require('./authentication/LogInUser');
 const { LogOutUser } = require('./authentication/LogOut');
+const { DeleteUser } = require('./authentication/DeleteUser');
 
 // google auth provider code : project-233954112819
 
@@ -25,25 +26,18 @@ const getAllBlogs = async (req, res) => {
     }
 }
 
-// const getSingleBlog = async(req, res) => { }
-
-// const postCreateBlog = async (req, res) => { }
-
-// const putUpdateBlog = async (req, res) => { }
-
-// const deleteBlog = async (req, res) => { }
-
-// const getSignedUser = async (req, res) => { }
-
-const createNewUser = async (req, res) => await CreateNewUser(req, res);
+const signUpUser = async (req, res) => await CreateNewUser(req, res);
 
 const logInUser = async (req, res) => await LogInUser(req, res);
 
 const logOutUser = async (req, res) => await LogOutUser(req, res);
 
+const deleteUser = async (req, res) => await DeleteUser(req, res);
+
 module.exports = { 
     getAllBlogs, 
-    createNewUser,
+    signUpUser,
     logInUser,
-    logOutUser
+    logOutUser,
+    deleteUser
 }

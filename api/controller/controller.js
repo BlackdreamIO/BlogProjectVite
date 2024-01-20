@@ -1,16 +1,18 @@
 const { Blog } = require("../models/blog");
 const { client } = require('../db/mongoDB');
-
 exports.getAllBlog = async (req, res) => {
     try
-    {
-        const database = client.db('blogs');
-        const collection = database.collection('blog');
-        const query = {}; // Add your query criteria here
-        const result = await collection.find(query).toArray();
-        
-        const blogs = await Blog.find();
-        res.status(200).json({blogs : result})
+    {   
+        const { collection, getDocs, getDoc } = require('firebase/firestore');
+        const { db } = require('../db/config');
+
+        const collectionRef = collection(db, 'blogs');
+        const documentRef = await getDocs(collectionRef);
+        const data = [];
+        documentRef.forEach((doc) => {
+            data.push(doc.data())
+        })
+        res.json({blogs : data})
     }
     catch(error) 
     {

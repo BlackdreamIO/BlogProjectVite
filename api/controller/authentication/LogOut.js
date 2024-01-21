@@ -3,19 +3,26 @@ const { auth } = require('../../db/config');
 const LogOutUser = async (req, res) => {
     try 
     {
-        const result = await auth.signOut();
-        
-        res.status(200).json({
-            status : result === undefined ? 'Failed To Log Out' : "Logged Out User",
-        })    
+        await auth.signOut()
+            .then(() => {
+                res.status(200).json({
+                    status : "Logged Out User",
+                })
+            })
+            .catch((err) => {
+                res.status(200).json({
+                    status : "Failed Logged Out User",
+                    errorMSG : err.message
+                })
+            })
     } 
     catch (error) 
     {
         res.status(404).json({
             status : 'Failed To Log Out',
-            error : error.message
+            errorMSG : error.message
         })    
-    }s
+    }
 }
 
 module.exports = { LogOutUser };

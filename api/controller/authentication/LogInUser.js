@@ -14,16 +14,19 @@ const LogInUser = async(req, res) => {
         {
             const currentUser = await signInWithEmailAndPassword(auth, user_email, user_password)
                 .then((userCredential) => userCredential)
-                .catch((error) => error);
-            
-            console.log(currentUser);
+                .catch(() => "");
+
+            res.status(200).json({
+                status : currentUser ? 'Successfully Logged In' : 'Failed In Authentication',
+                error : ''
+            })
         }
     } 
     catch (error) 
     {
         res.status(404).json({
             status : 'Failed To Logged In',
-            error : error
+            errorMSG : error.message
         })
     }
 }

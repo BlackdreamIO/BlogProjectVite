@@ -5,6 +5,7 @@ const { CreateNewUser } = require('./authentication/CreateUser');
 const { LogInUser } = require('./authentication/LogInUser');
 const { LogOutUser } = require('./authentication/LogOut');
 const { DeleteUser } = require('./authentication/DeleteUser');
+const { UserExistInFirebase, GetCurrentUser} = require('../utils/UserExist');
 
 // google auth provider code : project-233954112819
 
@@ -32,12 +33,18 @@ const logInUser = async (req, res) => await LogInUser(req, res);
 
 const logOutUser = async (req, res) => await LogOutUser(req, res);
 
-const deleteUser = async (req, res) => await DeleteUser(req, res);
+const deleteCurrentUser = async (req, res) => await DeleteUser(req, res);
+
+const userExist = async (req, res) => res.json({status : UserExistInFirebase()});
+
+const getCurrentUser = (req, res) => res.json({credentials : GetCurrentUser()});
 
 module.exports = { 
     getAllBlogs, 
     signUpUser,
     logInUser,
     logOutUser,
-    deleteUser
+    deleteCurrentUser,
+    userExist,
+    getCurrentUser,
 }

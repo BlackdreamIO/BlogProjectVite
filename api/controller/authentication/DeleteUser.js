@@ -1,13 +1,21 @@
 const { auth } = require('../../db/config');
+const { UserExistInFirebase } = require('../../utils/UserExist');
 
 const DeleteUser = async (req, res) => {
     try 
     {
-        const result = await auth.currentUser.delete();
+        if(UserExistInFirebase())
+        {
+            const result = await auth.currentUser.delete();
         
-        res.status(200).json({
-            status : result === undefined ? 'Failed To Delete Account' : "Account Deleted",
-        })    
+            res.status(200).json({
+                status : result === undefined ? 'Failed To Delete Account' : "Account Deleted",
+            }) 
+        }
+        res.status(404).json({
+            status : 'Failed To Delete Account',
+            error : 'No Active Account Found'
+        })   
     } 
     catch (error) 
     {
@@ -15,7 +23,7 @@ const DeleteUser = async (req, res) => {
             status : 'Failed To Delete Account',
             error : error.message
         })    
-    }s
+    }
 }
 
 module.exports = { DeleteUser };

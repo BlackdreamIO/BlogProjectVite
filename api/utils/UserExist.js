@@ -1,15 +1,15 @@
 const { auth } = require('../db/config');
 
-const UserExistInFirebase = () => {
-    try 
+const UserExistInFirebase = () => auth.currentUser ? true : false;
+
+const GetCurrentUser = () => {
+    if(UserExistInFirebase()) 
     {
-        const hasUser = auth.currentUser ? true : false;
-        return hasUser;
-    } 
-    catch (error) 
-    {
-        return false;    
+        const userCredentials = auth.currentUser;
+        console.log("userCredentials : ", userCredentials);
+        return userCredentials;
     }
+    return null;
 }
 
-module.exports = UserExistInFirebase;
+module.exports = { UserExistInFirebase, GetCurrentUser };

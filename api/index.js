@@ -5,11 +5,14 @@ const { ConnectToMongoDB } = require('./db/mongoDB');
 const { collection, getDocs, getDoc } = require('firebase/firestore');
 const { db } = require('./db/config');
 const router = require("./router/route");
+const authRouter = require('./router/authRoute');
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/auth", authRouter);
 app.use("/api", router);
 
 // app.use("/api/blog", async (req, res) => {
